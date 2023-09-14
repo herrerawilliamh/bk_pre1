@@ -1,9 +1,10 @@
+/*IMPORTS*/
 import express from "express";
 import path from "path";
 import { fileURLToPath } from 'url';
 import productsRouter from './routes/products.router.js';
 
-
+/*VARS*/
 const app = express();
 const PORT = 8080
 const __filename = fileURLToPath(import.meta.url);
@@ -19,6 +20,11 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 /*Routes*/
 app.use("/", productsRouter)
+
+/*Server Route to .html*/
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"))
+})
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`)

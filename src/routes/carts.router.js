@@ -3,7 +3,7 @@ import ProductManager from "../ProductManager.js";
 
 const router = express.Router();
 const productManager = new ProductManager();
-const products = productManager.getProducts();
+const carts = productManager.getProducts();
 
 router.get("/", (req, res) => {
     const limit = req.query.limit || products.length;
@@ -21,17 +21,6 @@ router.post("/", (req, res)=>{
     const {title, description, price, thumbnail, code, stock} = req.body;
     productManager.addProduct(title, description, price, thumbnail, code, stock);
     res.send("Producto agregado exitosamente");
-})
-
-router.put("/:pid", (req, res) => {
-    const idProduct = parseInt(req.params.pid);
-    const {campo, dato} = req.body;
-    productManager.updateProduct(idProduct, campo, dato);
-})
-
-router.delete("/:pid", (req, res) => {
-    const idProduct = parseInt(req.params.pid);
-    productManager.deleteProduct(idProduct);
 })
 
 export default router;
