@@ -1,4 +1,3 @@
-//const fs = require('fs')
 import fs from 'fs'
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -11,9 +10,6 @@ class ProductManager{
     constructor(){
         this.products=[]
         this.path
-    }
-    getProducts(){
-        return this.products
     }
     addProduct(title, description, price, thumbnail, code, stock){
         const product_id=this.products.length+1
@@ -46,6 +42,7 @@ class ProductManager{
         } catch (error) {
             console.error("Error de lectura", error);
         }   
+        return this.products
     }
     getProductsById(id){
         const data_reading = this.getProducts()
