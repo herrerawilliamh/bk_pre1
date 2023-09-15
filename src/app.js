@@ -3,6 +3,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from 'url';
 import productsRouter from './routes/products.router.js';
+import cartsRouter from './routes/carts.router.js'
 
 /*VARS*/
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 /*Routes*/
 app.use("/", productsRouter)
+app.use("/", cartsRouter)
 
 /*Server Route to .html*/
 app.get("/", (req, res) => {
