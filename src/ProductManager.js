@@ -12,8 +12,11 @@ class ProductManager{
         this.path
     }
     addProduct(title, description, price, thumbnail, code, stock){
+        if(!thumbnail){
+            thumbnail = ""
+        }
         const product_id=this.products.length+1
-        const required_fields = this.products.includes("")
+        const required_fields = [title, description, price, code, stock].includes("")
         if(required_fields){
             console.log("Debes completar todos los campos")
             return
