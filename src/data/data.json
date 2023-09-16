@@ -5,10 +5,11 @@
     "description": "Aenean auctor gravida sem.",
     "price": 1500,
     "thumbnail": "http://dummyimage.com/200x100.png/cc0000/ffffff",
-    "code": "medias",
+    "code": "medias",    
     "stock": 10
-  },
-  {
+
+},
+{
     "id": 2,
     "title": "Muffin - Mix - Strawberry Rhubarb 2",
     "description": "Nulla ut erat id mauris vulputate elementum.",
@@ -171,12 +172,12 @@
     "stock": 10
   },
   {
-      "id": 20,
-      "title": "Bread - Hot Dog Buns",
-      "description": "Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc.",
-      "price": 1500,
-      "thumbnail": "http://dummyimage.com/200x100.png/dddddd/000000",
-      "code": "buzos",
-      "stock": 10
+    "id": 20,
+    "title": "Bread - Hot Dog Buns",
+    "description": "Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc.",
+    "price": 1500,
+    "thumbnail": "http://dummyimage.com/200x100.png/dddddd/000000",
+    "code": "buzos",
+    "stock": 10
   }
 ]

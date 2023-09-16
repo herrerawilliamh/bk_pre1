@@ -25,15 +25,16 @@ router.post("/", (req, res)=>{
 
 router.put("/:pid", (req, res) => {
     const idProduct = parseInt(req.params.pid);
-    const product = productManager.getProductById(idProduct);
+    const product = productManager.getProductsById(idProduct);
     if(!product) return res.send({error: "Producto no encontrado"});
     const {campo, dato} = req.body;
     productManager.updateProduct(idProduct, campo, dato);
+    res.send("Producto actualizado exitosamente");
 })
 
 router.delete("/:pid", (req, res) => {
     const idProduct = parseInt(req.params.pid);
-    const product = productManager.getProductById(idProduct);
+    const product = productManager.getProductsById(idProduct);
     if(!product) return res.send({error: "Producto no encontrado"}); 
     productManager.deleteProduct(idProduct);
     res.send("Producto eliminado exitosamente"); 

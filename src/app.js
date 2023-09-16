@@ -17,16 +17,16 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 /*Manager Public Folder*/
-app.use(express.static(path.join(__dirname, 'public')))
+//app.use(express.static(path.join(__dirname, 'public')))
 
 /*Routes*/
 app.use("/", productsRouter)
 app.use("/", cartsRouter)
 
 /*Server Route to .html*/
-app.get("/", (req, res) => {
+/*app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"))
-})
+})*/
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`)

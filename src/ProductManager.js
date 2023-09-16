@@ -36,6 +36,7 @@ class ProductManager{
             stock
         }
         this.products.push(product)
+        fs.writeFileSync(dataPath, JSON.stringify(this.products, null, 2));
     }
     getProducts(){
         try {
@@ -54,33 +55,39 @@ class ProductManager{
             console.log("Product Not Found")
             return
         }
-        console.log(product_found)
+        return product_found
     }
     updateProduct(id, campo, dato){
-        const data_reading = this.getProducts()
-        const product_found = data_reading.find((product)=>product.id===id)
-        if(!product_found){
-            console.log("Product Not Found")
+        const data_reading = this.getProductsById(id);
+        let product_found = this.getProducts();
+        if(!data_reading){
+            console.log("Product Not Found. No se pudo actualizar el producto.")
             return
         }
-        if(product_found[campo] === dato){
-            console.log("Se esperaba un cambio en el dato")
-        } else{
-            product_found[campo] = dato
-            fs.writeFileSync("data.json", JSON.stringify(data_reading, null, 2))
-            console.log("Archivo actualizado exitosamente")
-        } 
+        if (data_reading[campo] === dato) {
+            console.log("Es el mismo dato. No se necesita actualizar el producto.");
+            return;
+          }
+        data_reading[campo] = dato;
+        product_found = product_found.map((p) => {
+            if(p.id === id){
+                return data_reading
+            }
+            return p
+        });
+        fs.writeFileSync(dataPath, JSON.stringify(product_found, null, 2));
+        console.log("Producto actualizado exitosamente");
+        return product_found
     }
     deleteProduct(id){
-        const data_reading = this.getProducts()
-        const product_found = data_reading.find((product)=>product.id===id)
-        if(!product_found){
-            console.log("Product Not Found")
+        const data_reading = this.getProductsById(id);
+        let product_found = this.getProducts();
+        if(!data_reading){
+            console.log("Product Not Found. El producto no existe.")
             return
         }
-        const index = data_reading.indexOf(product_found)
-        data_reading.splice(index, 1)
-        fs.writeFileSync("data.json", JSON.stringify(data_reading, null, 2))
+        product_found = product_found.filter((p) => p.id !== id);
+        fs.writeFileSync(dataPath, JSON.stringify(product_found, null, 2))
         console.log("Producto eliminado exitosamente")
     }
 
