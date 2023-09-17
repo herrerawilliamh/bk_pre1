@@ -2,24 +2,33 @@ import express from "express";
 
 const router = express.Router();
 const carts = [];
-const lastId = 0;
+let lastId = 0;
 
 function generateId(){
-    return ++lastId.toString();
+    return (lastId++).toString();
 }
 
-router.post('/', (req,res) => {
-    const cart = {
-        id: generateId(), 
-        products: []
-    }
-    carts.push(cart);
+router.post('/carts', (req,res) => {
+  let id, found;
+  do {
+    id = generateId();
+    found = carts.find(cart => cart.id === id);
+  } while (found)
+  const cart = {
+      id: generateId(), 
+      products: []
+  }
+  carts.push(cart);
+  if(cart.products.length>0){
     res.status(201).json(cart);
+  }else{
+    res.status(400).send("El carrito no tiene productos");
+  }
 });
 
-router.get('/:cid', (req, res) => {
+router.get('/carts/:cid', (req, res) => {
     const cid = req.params.cid;
-    const cart_cid = carts.find(c => c.id === cid);
+    const cart_cid = carts.find(cart => cart.id === cid);
     if (cart_cid) {
       res.status(200).json(cart_cid);
     } else {
@@ -27,7 +36,7 @@ router.get('/:cid', (req, res) => {
     }
   });
 
-  router.post('/:cid/product/:pid', (req, res) => {
+  router.post('/carts/:cid/product/:pid', (req, res) => {
     const cid = req.params.cid;
     const pid = req.params.pid;
     const cart = carts.find(c => c.id === cid);
