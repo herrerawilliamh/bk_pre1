@@ -15,7 +15,6 @@ class ProductManager{
         if(!thumbnail){
             thumbnail = ""
         }
-        const product_id=this.products.length+1
         const required_fields = [title, description, price, code, stock].includes("")
         if(required_fields){
             console.log("Debes completar todos los campos")
@@ -26,6 +25,9 @@ class ProductManager{
             console.log("Código de producto encontrado, debes cambiar el Código de producto")
             return
         }
+        const products = this.getProducts()
+        const last_id = products[products.length - 1].id
+        const product_id = last_id + 1
         const product={
             id:product_id,
             title,
@@ -35,8 +37,9 @@ class ProductManager{
             code,
             stock
         }
-        this.products.push(product)
-        fs.writeFileSync(dataPath, JSON.stringify(this.products, null, 2));
+        products.push(product)
+        const new_data = JSON.stringify(products, null, 2);
+        fs.appendFileSync(dataPath, new_data);
     }
     getProducts(){
         try {
