@@ -1,58 +1,45 @@
 import express from "express";
+import CartManager from "../CartManager.js";
+import ProductManager from "../ProductManager.js";
+
 
 const router = express.Router();
-const carts = [];
-let lastId = 0;
+const products = new ProductManager();
+const cartManager = new CartManager(products);
 
 function generateId(){
     return (lastId++).toString();
 }
 
 router.post('/carts', (req,res) => {
-  let id, found;
-  do {
-    id = generateId();
-    found = carts.find(cart => cart.id === id);
-  } while (found)
-  const cart = {
-      id: generateId(), 
-      products: []
-  }
-  carts.push(cart);
-  if(cart.products.length>0){
-    res.status(201).json(cart);
+  const cart = cartManager.createCart();
+  if (typeof cart === "object") {
+    res.status(200).json(cart);
   }else{
-    res.status(400).send("El carrito no tiene productos");
+    res.status(404).json({message: cart});
   }
 });
 
 router.get('/carts/:cid', (req, res) => {
     const cid = req.params.cid;
-    const cart_cid = carts.find(cart => cart.id === cid);
-    if (cart_cid) {
-      res.status(200).json(cart_cid);
+    const cart = cartManager.getCartById(cid);
+    if (cart) {
+      res.status(200).json(cart);
     } else {
       res.status(404).json({message: 'Cart not found'});
     }
   });
 
-  router.post('/carts/:cid/product/:pid', (req, res) => {
-    const cid = req.params.cid;
-    const pid = req.params.pid;
-    const cart = carts.find(c => c.id === cid);
-    const product = products.find(p => p.id === pid);
-    if (cart && product) {
-      const item = cart.products.find(i => i.product === pid);
-      if (!item) {
-        cart.products.push({product: pid, quantity: 1});
-      } else {
-        item.quantity++;
-      }
-      res.status(200).json(cart);
-    } else {
-      res.status(404).json({message: 'Cart or product not found'});
-    }
-  });
+router.post('/carts/:cid/product/:pid', (req, res) => {
+  const cid = req.params.cid;
+  const pid = req.params.pid;
+  const cart = cartManager.addProductToCart(cid, pid);
+  if (cart) {
+    res.status(200).json(cart);
+  } else {
+    res.status(404).json({message: 'Cart or product not found'});
+  }
+});
   
 
 export default router;

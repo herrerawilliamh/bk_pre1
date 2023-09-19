@@ -18,12 +18,12 @@ class ProductManager{
         const required_fields = [title, description, price, code, stock].includes("")
         if(required_fields){
             console.log("Debes completar todos los campos")
-            return
+            return false
         }
         const code_found =this.products.find((product)=>product.code===product.code)
         if(code_found){
             console.log("Código de producto encontrado, debes cambiar el Código de producto")
-            return
+            return false
         }
         const products = this.getProducts()
         const last_id = products[products.length - 1].id
@@ -39,7 +39,7 @@ class ProductManager{
         }
         products.push(product)
         const new_data = JSON.stringify(products, null, 2);
-        fs.appendFileSync(dataPath, new_data);
+        fs.writeFileSync(dataPath, new_data);
     }
     getProducts(){
         try {
@@ -53,7 +53,7 @@ class ProductManager{
     }
     getProductsById(id){
         const data_reading = this.getProducts()
-        const product_found = data_reading.find((product)=>product.id===id)
+        const product_found = data_reading.find((product)=>product.id===+id)
         if(!product_found){
             console.log("Product Not Found")
             return
@@ -62,16 +62,16 @@ class ProductManager{
     }
     updateProduct(id, campo, dato){
         const data_reading = this.getProductsById(id);
-        let product_found = this.getProducts();
         if(!data_reading){
             console.log("Product Not Found. No se pudo actualizar el producto.")
             return
         }
         if (data_reading[campo] === dato) {
             console.log("Es el mismo dato. No se necesita actualizar el producto.");
-            return;
-          }
+            return
+        }
         data_reading[campo] = dato;
+        let product_found = this.getProducts();
         product_found = product_found.map((p) => {
             if(p.id === id){
                 return data_reading
